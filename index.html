@@ -60,10 +60,10 @@
       padding: 0.2rem 1rem; border-radius: 2rem; font-size: 0.9rem; color: #ffffff;
     }
     .container { padding: 1.8rem 2rem 2.2rem; display: flex; flex-direction: column; gap: 1.8rem; }
-    .menu-buttons-top { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+    .menu-buttons-top { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
     .menu-btn-top {
-      flex: 1; min-width: 100px; padding: 0.6rem 0.8rem; background: #0a1f5c; color: white;
-      border: none; border-radius: 2rem; cursor: pointer; font-weight: 500; font-size: 0.85rem;
+      flex: 1; min-width: 85px; padding: 0.5rem 0.6rem; background: #0a1f5c; color: white;
+      border: none; border-radius: 2rem; cursor: pointer; font-weight: 500; font-size: 0.8rem;
       transition: all 0.2s ease; text-align: center; white-space: nowrap;
     }
     .menu-btn-top:hover { background: #132f7a; transform: translateY(-1px); }
@@ -144,10 +144,7 @@
       font-weight: 500; background: #eef1f8; padding: 0.5rem 1.5rem;
       border-radius: 2rem; font-size: 0.95rem; color: #1f2645;
     }
-    /* Стили для карточек заучивания */
-    .flashcard-container {
-      display: flex; flex-direction: column; gap: 1.5rem; align-items: center;
-    }
+    .flashcard-container { display: flex; flex-direction: column; gap: 1.5rem; align-items: center; }
     .flashcard {
       width: 100%; min-height: 250px; perspective: 1000px; cursor: pointer;
     }
@@ -170,21 +167,11 @@
       background: linear-gradient(135deg, #fdf8f0 0%, #faf3e8 100%);
       border: 2px solid #c0a060; color: #1a1f2c; transform: rotateY(180deg);
     }
-    .flashcard-term {
-      font-weight: 700; font-size: 1.5rem; color: #0a1f5c; margin-bottom: 0.5rem;
-    }
-    .flashcard-def {
-      font-weight: 400; font-size: 1.05rem; color: #2d2d2d;
-    }
-    .flashcard-hint {
-      font-size: 0.85rem; color: #8b8b8b; margin-top: 1rem;
-    }
-    .flashcard-controls {
-      display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; width: 100%;
-    }
-    .flashcard-counter {
-      font-weight: 500; color: #5a6380; text-align: center; font-size: 0.95rem;
-    }
+    .flashcard-term { font-weight: 700; font-size: 1.5rem; color: #0a1f5c; margin-bottom: 0.5rem; }
+    .flashcard-def { font-weight: 400; font-size: 1.05rem; color: #2d2d2d; }
+    .flashcard-hint { font-size: 0.85rem; color: #8b8b8b; margin-top: 1rem; }
+    .flashcard-controls { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; width: 100%; }
+    .flashcard-counter { font-weight: 500; color: #5a6380; text-align: center; font-size: 0.95rem; }
     @media (max-width: 550px) {
       .container { padding: 1.2rem 1rem; } .question-block { padding: 1.2rem 1rem; }
       .header { padding: 1.2rem 1.2rem; } .university-title { font-size: 1rem; }
@@ -207,8 +194,8 @@
 <script>
 (function() {
   const dynamicContent = document.getElementById('dynamicContent');
-  
-  // ========== 327 ОПРЕДЕЛЕНИЙ ==========
+
+  // ========== 327 ОПРЕДЕЛЕНИЙ (полные) ==========
   const ALL_DEFINITIONS = [
     "ARIS (ARchitecture of Integrated Information Systems) — архитектура интегрированных информационных систем",
     "BCP (Business continuity plan) — план обеспечения непрерывности бизнеса",
@@ -525,7 +512,18 @@
     "Модель Путмана — модель оценки усилий и длительности разработки ПО"
   ];
 
-  // ========== ДАННЫЕ ГОСТОВ ДЛЯ ЗАУЧИВАНИЯ ==========
+  // 124 прямых определений (индексы в ALL_DEFINITIONS)
+  const DIRECT_DEF_INDICES = [
+    0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,
+    34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,
+    65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,
+    96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,
+    120,121,122,123
+  ];
+
+  const DIRECT_DEFS = DIRECT_DEF_INDICES.map(i => ALL_DEFINITIONS[i]);
+
+  // ========== ДАННЫЕ ГОСТОВ ==========
   const GOST_ENTRIES = [
     { code: "ISO/IEC 12207-2017", name: "System and software engineering - Software life cycle processes" },
     { code: "ГОСТ Р ИСО/МЭК 12207-2010", name: "Процессы жизненного цикла программных средств" },
@@ -543,10 +541,10 @@
     { code: "ISO 21500:2021", name: "Project, programme and portfolio management — Context and concepts" },
     { code: "ГОСТ Р ИСО 21500-2023", name: "Управление проектами, программами и портфелями проектов" },
     { code: "ISO 10006", name: "Quality management — Guidelines for quality management in projects" },
-    { code: "ГОСТ Р ИСО 10006-2019", name: "Менеджмент качества. Руководящие указания по менеджменту качества в проектах" },
+    { code: "ГОСТ Р ИСО 10006-2019", name: "Менеджмент качества в проектах" },
     { code: "ISO/IEC 15939:2007", name: "Systems and software engineering — Measurement process" },
     { code: "ГОСТ Р 58606-2019", name: "Процесс измерения" },
-    { code: "ISO/IEC 16085:2006", name: "System and Software Engineering — Life Cycle Management — Risk Management" },
+    { code: "ISO/IEC 16085:2006", name: "Life Cycle Management — Risk Management" },
     { code: "ГОСТ Р ИСО/МЭК 16085-2007", name: "Менеджмент риска" },
     { code: "ISO/IEC/IEEE 41062", name: "Software acquisition" },
     { code: "ISO/IEC 16350:2015", name: "Application management" },
@@ -558,9 +556,9 @@
     { code: "ГОСТ Р ИСО/МЭК 20000-1-2021", name: "Менеджмент сервисов. Требования" },
     { code: "ISO 15704:2000", name: "Industrial automation systems" },
     { code: "ISO 9000:2015", name: "Quality management systems — Fundamentals and vocabulary" },
-    { code: "ГОСТ Р ИСО 9000-2015", name: "Системы менеджмента качества. Основные положения и словарь" },
+    { code: "ГОСТ Р ИСО 9000-2015", name: "СМК. Основные положения и словарь" },
     { code: "ISO 9001:2015", name: "Quality management systems — Requirements" },
-    { code: "ГОСТ Р ИСО 9001-2015", name: "Системы менеджмента качества. Требования" },
+    { code: "ГОСТ Р ИСО 9001-2015", name: "СМК. Требования" },
     { code: "ISO 9004:2009", name: "Quality management systems — Guidelines for performance improvements" },
     { code: "ГОСТ Р ИСО 9004-2019", name: "Менеджмент качества. Качество организации" },
     { code: "ISO 10004", name: "Customer satisfaction — Guidelines for monitoring and measuring" },
@@ -575,29 +573,29 @@
     { code: "ISO/IEC 25063", name: "SQuaRE — CIF for usability: Context of use description" },
     { code: "ISO/IEC TR 25060:2010", name: "SQuaRE — CIF for usability: General framework" },
     { code: "ISO/IEC/IEEE 29148:2011", name: "Life cycle processes — Requirements engineering" },
-    { code: "ISO/IEC/IEEE 29119", name: "Systems and software engineering — Software testing" },
+    { code: "ISO/IEC/IEEE 29119", name: "Software testing" },
     { code: "ГОСТ Р 56920-2016", name: "Тестирование программного обеспечения" },
     { code: "ISO/IEC 33001", name: "Process assessment — Concepts and terminology" },
     { code: "ГОСТ Р ИСО/МЭК 33001-2017", name: "Оценка процесса. Понятия и терминология" },
-    { code: "ISO/IEC 33002", name: "Process assessment — Requirements for performing process assessment" },
-    { code: "ГОСТ Р ИСО/МЭК 33002-2017", name: "Оценка процесса. Требования к проведению оценки" },
+    { code: "ISO/IEC 33002", name: "Requirements for performing process assessment" },
+    { code: "ГОСТ Р ИСО/МЭК 33002-2017", name: "Оценка процесса. Требования к проведению" },
     { code: "ISO/IEC 33004:2015", name: "Requirements for process reference, assessment, and maturity models" },
-    { code: "ГОСТ Р ИСО/МЭК 33004-2017", name: "Требования к эталонным моделям процесса и моделям зрелости" },
-    { code: "ISO/IEC 33020:2015", name: "Process measurement framework for assessment of process capability" },
-    { code: "ГОСТ 28195-89", name: "Оценка качества программных средств. Общие положения" },
+    { code: "ГОСТ Р ИСО/МЭК 33004-2017", name: "Требования к эталонным моделям и моделям зрелости" },
+    { code: "ISO/IEC 33020:2015", name: "Process measurement framework" },
+    { code: "ГОСТ 28195-89", name: "Оценка качества программных средств" },
     { code: "IEEE Std 1012", name: "System and Software Verification and Validation" },
     { code: "IEEE 1044-93", name: "Standard Classification for Software Anomalies" },
     { code: "IEEE 1028-2008", name: "IEEE Standard for Software Reviews" },
     { code: "IEEE 829-98", name: "Standard for Software Test Documentation" },
     { code: "IEEE 610-90", name: "Standard Glossary of Software Engineering Terminology" },
-    { code: "ISO/IEC/IEEE 42010:2011", name: "Systems and software engineering — Architecture description" },
+    { code: "ISO/IEC/IEEE 42010:2011", name: "Architecture description" },
     { code: "ГОСТ Р 57100-2016", name: "Описание архитектуры" },
-    { code: "ISO/IEC/IEEE 15289:2015", name: "Content of life-cycle information products (documentation)" },
-    { code: "ГОСТ Р 58609-2019", name: "Состав и содержание информационных элементов жизненного цикла" },
+    { code: "ISO/IEC/IEEE 15289:2015", name: "Content of life-cycle information products" },
+    { code: "ГОСТ Р 58609-2019", name: "Состав и содержание информационных элементов ЖЦ" },
     { code: "ISO/IEC/IEEE 26514:2022", name: "Design and development of user documentation" },
     { code: "ISO/IEC/IEEE 26515:2011", name: "Developing user documentation in an agile environment" },
     { code: "ISO/IEC/IEEE 26531:2015", name: "Content management for product life-cycle documentation" },
-    { code: "ISO/IEC 26550", name: "Reference model for product line engineering and management" },
+    { code: "ISO/IEC 26550", name: "Reference model for product line engineering" },
     { code: "ГОСТ 19.101-2024", name: "ЕСПД. Виды программ и программных документов" },
     { code: "ГОСТ 19.102-1977", name: "ЕСПД. Стадии разработки" },
     { code: "ГОСТ 19.106-78", name: "ЕСПД. Требования к программным документам" },
@@ -614,16 +612,16 @@
     { code: "IEC 61508", name: "Functional safety of electrical/electronic systems" },
     { code: "ГОСТ Р МЭК 61508-1-2012", name: "Функциональная безопасность электрических систем" },
     { code: "ISO/IEC 15026-3:2011", name: "Systems and software assurance - System integrity levels" },
-    { code: "ISO/IEC 15026-4:2012", name: "Systems and software assurance - Assurance in the life cycle" },
+    { code: "ISO/IEC 15026-4:2012", name: "Assurance in the life cycle" },
     { code: "ГОСТ Р ИСО/МЭК 15026-4-2016", name: "Гарантирование систем. Гарантии жизненного цикла" },
     { code: "ISO/IEC 27000", name: "Information security management systems - Overview and vocabulary" },
     { code: "ISO/IEC 27036", name: "Information security for supplier relationships" },
-    { code: "ГОСТ Р ИСО/МЭК 27036-1-2021", name: "Информационная безопасность во взаимоотношениях с поставщиками" },
+    { code: "ГОСТ Р ИСО/МЭК 27036-1-2021", name: "Информационная безопасность с поставщиками" },
     { code: "ISO 9241-210:2010", name: "Human-centred design for interactive systems" },
-    { code: "ГОСТ Р ИСО 9241-210-2016", name: "Человек-ориентированное проектирование интерактивных систем" },
+    { code: "ГОСТ Р ИСО 9241-210-2016", name: "Человек-ориентированное проектирование" },
     { code: "ISO 9241-220", name: "Processes for human-centred design within organizations" },
-    { code: "ГОСТ Р ИСО 9241-220-2019", name: "Процессы человеко-ориентированного проектирования в организациях" },
-    { code: "ISO TS 18152:2010", name: "Specification for the process assessment of human-system issues" },
+    { code: "ГОСТ Р ИСО 9241-220-2019", name: "Процессы человеко-ориентированного проектирования" },
+    { code: "ISO TS 18152:2010", name: "Process assessment of human-system issues" },
     { code: "ГОСТ Р 59793-2021", name: "Создание автоматизированных систем (АС)" },
     { code: "ГОСТ 34.602-2020", name: "Техническое задание на автоматизированную систему" },
     { code: "ГОСТ 34.201-2020", name: "Технический проект АСУ" },
@@ -652,16 +650,18 @@
       <div class="container">
         <div class="menu-buttons-top">
           <button class="menu-btn-top active" onclick="navigate('home')">🏠 Главная</button>
-          <button class="menu-btn-top" onclick="navigate('gost')">📘 Тест по ГОСТам</button>
-          <button class="menu-btn-top" onclick="navigate('definitions')">📙 Тест по определениям</button>
+          <button class="menu-btn-top" onclick="navigate('gost')">📘 Тест ГОСТы</button>
+          <button class="menu-btn-top" onclick="navigate('definitions')">📙 Тест все</button>
+          <button class="menu-btn-top" onclick="navigate('directDefs')">📗 Тест прямые</button>
           <button class="menu-btn-top" onclick="navigate('learnGost')">🔄 ГОСТы учить</button>
-          <button class="menu-btn-top" onclick="navigate('learnDef')">🔄 Определения учить</button>
+          <button class="menu-btn-top" onclick="navigate('learnDef')">🔄 Опред. учить</button>
         </div>
         <h1>📋 Выберите режим</h1>
         <div class="section-title">🧪 Тесты</div>
         <div class="menu-buttons">
-          <button class="menu-btn test-btn" onclick="navigate('gost')">📘 Тест по ГОСТам<br><small>112 вопросов: ISO/IEC, ГОСТ Р, IEEE, PMI, INCOSE</small></button>
-          <button class="menu-btn test-btn" onclick="navigate('definitions')">📙 Тест по определениям<br><small>${ALL_DEFINITIONS.length} вопросов: все определения из лекций</small></button>
+          <button class="menu-btn test-btn" onclick="navigate('gost')">📘 Тест по ГОСТам<br><small>${GOST_ENTRIES.length} вопросов: ISO/IEC, ГОСТ Р, IEEE, PMI, INCOSE</small></button>
+          <button class="menu-btn test-btn" onclick="navigate('definitions')">📙 Тест по всем определениям<br><small>${ALL_DEFINITIONS.length} вопросов: все определения из лекций</small></button>
+          <button class="menu-btn test-btn" onclick="navigate('directDefs')">📗 Тест по прямым определениям<br><small>${DIRECT_DEFS.length} вопросов: определения через тире/дефис</small></button>
         </div>
         <div class="section-title">📖 Заучивание (карточки)</div>
         <div class="menu-buttons">
@@ -675,10 +675,11 @@
     return `
       <div class="menu-buttons-top">
         <button class="menu-btn-top" onclick="navigate('home')">🏠 Главная</button>
-        <button class="menu-btn-top ${active==='gost'?'active':''}" onclick="navigate('gost')">📘 Тест по ГОСТам</button>
-        <button class="menu-btn-top ${active==='definitions'?'active':''}" onclick="navigate('definitions')">📙 Тест по определениям</button>
-        <button class="menu-btn-top ${active==='learnGost'?'active':''}" onclick="navigate('learnGost')">🔄 ГОСТы учить</button>
-        <button class="menu-btn-top ${active==='learnDef'?'active':''}" onclick="navigate('learnDef')">🔄 Определения учить</button>
+        <button class="menu-btn-top ${active==='gost'?'active':''}" onclick="navigate('gost')">📘 Тест ГОСТы</button>
+        <button class="menu-btn-top ${active==='definitions'?'active':''}" onclick="navigate('definitions')">📙 Тест все</button>
+        <button class="menu-btn-top ${active==='directDefs'?'active':''}" onclick="navigate('directDefs')">📗 Тест прямые</button>
+        <button class="menu-btn-top ${active==='learnGost'?'active':''}" onclick="navigate('learnGost')">🔄 ГОСТы</button>
+        <button class="menu-btn-top ${active==='learnDef'?'active':''}" onclick="navigate('learnDef')">🔄 Опред.</button>
       </div>`;
   }
 
@@ -686,6 +687,7 @@
     if (page === 'home') renderHome();
     else if (page === 'gost') renderGostTest();
     else if (page === 'definitions') renderDefinitionsTest();
+    else if (page === 'directDefs') renderDirectDefsTest();
     else if (page === 'learnGost') renderGostLearn();
     else if (page === 'learnDef') renderDefinitionsLearn();
   };
@@ -708,147 +710,19 @@
           <button class="restart-btn" id="gostRestartButton">⟳ Новый тест</button>
         </div>
       </div>`;
-    initGostTest();
-  }
-
-  function initGostTest() {
-    const rawQuestions = GOST_ENTRIES.map(g => ({
+    initTest('gost', GOST_ENTRIES.map(g => ({
       text: `${g.code} — это:`,
-      options: [g.name + ' верно', 
-        GOST_ENTRIES[(GOST_ENTRIES.indexOf(g) + 13) % GOST_ENTRIES.length].name,
-        GOST_ENTRIES[(GOST_ENTRIES.indexOf(g) + 27) % GOST_ENTRIES.length].name,
-        GOST_ENTRIES[(GOST_ENTRIES.indexOf(g) + 41) % GOST_ENTRIES.length].name]
-    }));
-
-    function parseQuestions(raw) {
-      return raw.map((item, idx) => {
-        const correctIndices = [];
-        const cleanOptions = item.options.map((opt, optIdx) => {
-          const cleaned = opt.replace(/\s*верно\s*$/i, '').trim();
-          if (/\s*верно\s*$/i.test(opt)) correctIndices.push(optIdx);
-          return cleaned;
-        });
-        return { id: idx, text: item.text, options: cleanOptions, correct: correctIndices };
-      });
-    }
-
-    const parsedQuestions = parseQuestions(rawQuestions);
-    let currentQuestions = [];
-    let userAnswers = new Map();
-    let questionLocked = new Map();
-    const container = document.getElementById('gostQuestionsContainer');
-    const progressEl = document.getElementById('gostProgressIndicator');
-    const scoreEl = document.getElementById('gostScoreDisplay');
-    const correctEl = document.getElementById('gostCorrectCount');
-    const incorrectEl = document.getElementById('gostIncorrectCount');
-    const pendingEl = document.getElementById('gostPendingCount');
-    const restartBtn = document.getElementById('gostRestartButton');
-
-    function shuffle(arr) { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
-
-    function buildQuestions() {
-      return shuffle([...parsedQuestions]).map(q => {
-        const idxs = q.options.map((_,i)=>i);
-        const shuffledIdxs = shuffle([...idxs]);
-        const opts = shuffledIdxs.map(i => q.options[i]);
-        const corr = [];
-        shuffledIdxs.forEach((orig, newIdx) => { if (q.correct.includes(orig)) corr.push(newIdx); });
-        return { ...q, options: opts, correct: corr.sort((a,b)=>a-b) };
-      });
-    }
-
-    function getStats() {
-      let correct = 0, incorrect = 0;
-      for (let q of currentQuestions) {
-        if (!questionLocked.get(q.id)) continue;
-        const sel = userAnswers.get(q.id) || new Set();
-        const corr = new Set(q.correct);
-        if (sel.size === corr.size && [...sel].every(v => corr.has(v))) correct++; else incorrect++;
-      }
-      const total = currentQuestions.length, answered = correct + incorrect;
-      return { correct, incorrect, pending: total - answered, answered, total };
-    }
-
-    function updateStats() {
-      const s = getStats();
-      correctEl.textContent = s.correct;
-      incorrectEl.textContent = s.incorrect;
-      pendingEl.textContent = s.pending;
-      progressEl.textContent = `Вопросов: ${s.answered} / ${s.total}`;
-      scoreEl.textContent = `✓ ${s.correct}`;
-    }
-
-    function lockQuestion(qId) {
-      const question = currentQuestions.find(q => q.id === qId);
-      if (!question) return;
-      const sel = userAnswers.get(qId) || new Set();
-      const block = document.querySelector(`.question-block[data-question-id="${qId}"]`);
-      if (!block) return;
-      block.querySelectorAll('.option-item').forEach((item, idx) => {
-        item.style.pointerEvents = 'none';
-        const isCorr = question.correct.includes(idx), isSel = sel.has(idx);
-        item.classList.remove('selected-correct','selected-incorrect','reveal-correct','user-selected');
-        if (isSel && isCorr) item.classList.add('selected-correct');
-        else if (isSel && !isCorr) item.classList.add('selected-incorrect');
-        else if (!isSel && isCorr) item.classList.add('reveal-correct');
-      });
-      const btn = block.querySelector('.confirm-btn'); if (btn) btn.remove();
-      questionLocked.set(qId, true);
-      updateStats();
-    }
-
-    function handleOptionClick(qId, optIdx) {
-      if (questionLocked.get(qId)) return;
-      const q = currentQuestions.find(q => q.id === qId);
-      if (!q) return;
-      if (!userAnswers.has(qId)) userAnswers.set(qId, new Set());
-      const sel = userAnswers.get(qId);
-      sel.clear(); sel.add(optIdx); userAnswers.set(qId, sel);
-      lockQuestion(qId);
-      updateStats();
-    }
-
-    function renderQuestions() {
-      container.innerHTML = '';
-      userAnswers.clear(); questionLocked.clear();
-      currentQuestions.forEach(q => {
-        const block = document.createElement('div');
-        block.className = 'question-block';
-        block.setAttribute('data-question-id', q.id);
-        const qt = document.createElement('div');
-        qt.className = 'question-text'; qt.textContent = q.text;
-        block.appendChild(qt);
-        const opts = document.createElement('div');
-        opts.className = 'options';
-        q.options.forEach((optText, idx) => {
-          const oi = document.createElement('div');
-          oi.className = 'option-item'; oi.setAttribute('data-option-index', idx);
-          const mk = document.createElement('span');
-          mk.className = 'option-marker'; mk.textContent = String.fromCharCode(65+idx)+'.';
-          const ts = document.createElement('span');
-          ts.className = 'option-text'; ts.textContent = optText;
-          oi.appendChild(mk); oi.appendChild(ts);
-          oi.addEventListener('click', (e) => { e.stopPropagation(); handleOptionClick(q.id, idx); });
-          opts.appendChild(oi);
-        });
-        block.appendChild(opts);
-        container.appendChild(block);
-      });
-      updateStats();
-    }
-
-    function restart() { currentQuestions = buildQuestions(); renderQuestions(); }
-    currentQuestions = buildQuestions();
-    renderQuestions();
-    restartBtn.addEventListener('click', restart);
+      correct: g.name,
+      wrongPool: GOST_ENTRIES.filter(x => x.code !== g.code).map(x => x.name)
+    })));
   }
 
-  // ========== ТЕСТ ПО ОПРЕДЕЛЕНИЯМ ==========
+  // ========== ТЕСТ ПО ВСЕМ ОПРЕДЕЛЕНИЯМ ==========
   function renderDefinitionsTest() {
     dynamicContent.innerHTML = `
       <div class="container" id="defTestContainer">
         ${renderTopButtons('definitions')}
-        <h1>📙 Тест по определениям</h1>
+        <h1>📙 Тест по всем определениям</h1>
         <div class="stats-bar" id="defStatsBar">
           <div class="stat-item stat-correct">✅ Верно: <span id="defCorrectCount">0</span></div>
           <div class="stat-item stat-incorrect">❌ Неверно: <span id="defIncorrectCount">0</span></div>
@@ -861,22 +735,55 @@
           <button class="restart-btn" id="defRestartButton">⟳ Новый тест</button>
         </div>
       </div>`;
-    initDefinitionsTest();
+    initTest('def', DEFINITION_ENTRIES.map(e => ({
+      text: `${e.term} — это:`,
+      correct: e.def,
+      wrongPool: DEFINITION_ENTRIES.filter(x => x.term !== e.term).map(x => x.def)
+    })));
   }
 
-  function initDefinitionsTest() {
-    const questions = DEFINITION_ENTRIES.map((entry, idx) => {
-      const correctDef = entry.def;
-      const otherDefs = DEFINITION_ENTRIES.filter((_, i) => i !== idx);
-      const shuffledOthers = shuffleArray([...otherDefs]);
-      const wrongDefs = shuffledOthers.slice(0, 3).map(e => e.def);
-      const options = [correctDef + ' верно', ...wrongDefs];
-      return { id: idx, text: entry.term + ' — это:', options, correct: [0] };
+  // ========== ТЕСТ ПО ПРЯМЫМ ОПРЕДЕЛЕНИЯМ ==========
+  function renderDirectDefsTest() {
+    const entries = DIRECT_DEFS.map(d => {
+      const sepIdx = d.indexOf(' — ');
+      const term = sepIdx > 0 ? d.substring(0, sepIdx).trim() : d;
+      const def = sepIdx > 0 ? d.substring(sepIdx + 3).trim() : d;
+      return { term, def };
+    });
+    dynamicContent.innerHTML = `
+      <div class="container" id="directDefsTestContainer">
+        ${renderTopButtons('directDefs')}
+        <h1>📗 Тест по прямым определениям</h1>
+        <div class="stats-bar" id="directDefsStatsBar">
+          <div class="stat-item stat-correct">✅ Верно: <span id="directDefsCorrectCount">0</span></div>
+          <div class="stat-item stat-incorrect">❌ Неверно: <span id="directDefsIncorrectCount">0</span></div>
+          <div class="stat-item stat-pending">📝 Осталось: <span id="directDefsPendingCount">0</span></div>
+        </div>
+        <div class="progress" id="directDefsProgressIndicator">Вопросов: 0 / 0</div>
+        <div id="directDefsQuestionsContainer"></div>
+        <div class="footer">
+          <div class="score" id="directDefsScoreDisplay">✓ 0</div>
+          <button class="restart-btn" id="directDefsRestartButton">⟳ Новый тест</button>
+        </div>
+      </div>`;
+    initTest('directDefs', entries.map(e => ({
+      text: `${e.term} — это:`,
+      correct: e.def,
+      wrongPool: entries.filter(x => x.term !== e.term).map(x => x.def)
+    })));
+  }
+
+  // ========== УНИВЕРСАЛЬНАЯ ФУНКЦИЯ ТЕСТА ==========
+  function initTest(prefix, items) {
+    const rawQuestions = items.map((item, idx) => {
+      const wrongs = shuffleArray([...item.wrongPool]).slice(0, 3);
+      const options = [item.correct + ' верно', ...wrongs];
+      return { id: idx, text: item.text, options, correct: [0] };
     });
 
     function shuffleArray(arr) { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
 
-    const parsedQuestions = questions.map((item) => {
+    const parsedQuestions = rawQuestions.map((item) => {
       const correctIndices = [];
       const cleanOptions = item.options.map((opt, optIdx) => {
         const cleaned = opt.replace(/\s*верно\s*$/i, '').trim();
@@ -889,13 +796,13 @@
     let currentQuestions = [];
     let userAnswers = new Map();
     let questionLocked = new Map();
-    const container = document.getElementById('defQuestionsContainer');
-    const progressEl = document.getElementById('defProgressIndicator');
-    const scoreEl = document.getElementById('defScoreDisplay');
-    const correctEl = document.getElementById('defCorrectCount');
-    const incorrectEl = document.getElementById('defIncorrectCount');
-    const pendingEl = document.getElementById('defPendingCount');
-    const restartBtn = document.getElementById('defRestartButton');
+    const container = document.getElementById(`${prefix}QuestionsContainer`);
+    const progressEl = document.getElementById(`${prefix}ProgressIndicator`);
+    const scoreEl = document.getElementById(`${prefix}ScoreDisplay`);
+    const correctEl = document.getElementById(`${prefix}CorrectCount`);
+    const incorrectEl = document.getElementById(`${prefix}IncorrectCount`);
+    const pendingEl = document.getElementById(`${prefix}PendingCount`);
+    const restartBtn = document.getElementById(`${prefix}RestartButton`);
 
     function shuffle(arr) { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
 
@@ -935,7 +842,7 @@
       const question = currentQuestions.find(q => q.id === qId);
       if (!question) return;
       const sel = userAnswers.get(qId) || new Set();
-      const block = document.querySelector(`#defQuestionsContainer .question-block[data-question-id="${qId}"]`);
+      const block = document.querySelector(`#${prefix}QuestionsContainer .question-block[data-question-id="${qId}"]`);
       if (!block) return;
       block.querySelectorAll('.option-item').forEach((item, idx) => {
         item.style.pointerEvents = 'none';
@@ -996,7 +903,7 @@
     restartBtn.addEventListener('click', restart);
   }
 
-  // ========== ЗАУЧИВАНИЕ ГОСТОВ (карточки) ==========
+  // ========== ЗАУЧИВАНИЕ ГОСТОВ ==========
   function renderGostLearn() {
     const shuffled = shuffleArray([...GOST_ENTRIES]);
     dynamicContent.innerHTML = `
@@ -1015,7 +922,7 @@
     initLearn(shuffled, 'gost');
   }
 
-  // ========== ЗАУЧИВАНИЕ ОПРЕДЕЛЕНИЙ (карточки) ==========
+  // ========== ЗАУЧИВАНИЕ ОПРЕДЕЛЕНИЙ ==========
   function renderDefinitionsLearn() {
     const shuffled = shuffleArray([...DEFINITION_ENTRIES]);
     dynamicContent.innerHTML = `
